@@ -21,12 +21,6 @@ export const AddToCart = ({ product }: Props) => {
       return;
     }
 
-    console.log("Adding to cart", {
-      product,
-      size,
-      quantity,
-    });
-
     // TODO: add to cart
     const cartProduct: CartProduct = {
       id: product.id,
