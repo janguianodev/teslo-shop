@@ -1,5 +1,10 @@
 import { getOrderById } from "@/actions";
-import { QuantitySelector, Title } from "@/components";
+import {
+  OrderStatus,
+  PayPalButton,
+  QuantitySelector,
+  Title,
+} from "@/components";
 import { initialData } from "@/seed/seed";
 import { currencyFormatter } from "@/utils";
 import clsx from "clsx";
@@ -34,20 +39,7 @@ export default async function Order({ params }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
           {/* Cart */}
           <div className="flex flex-col mt-5">
-            <div
-              className={clsx(
-                "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
-                {
-                  "bg-red-500": !order?.isPaid,
-                  "bg-green-700": order?.isPaid,
-                }
-              )}
-            >
-              <IoCartOutline size={30} />
-              <span className="mx-2">
-                {order?.isPaid ? "Payed" : "Payment pending"}
-              </span>
-            </div>
+            <OrderStatus isPaid={order!.isPaid} />
 
             {/* Cart Items */}
             {order?.OrderItem.map((item) => (
@@ -120,20 +112,11 @@ export default async function Order({ params }: Props) {
             </div>
 
             <div className="mt-5 mb-2 w-full">
-              <div
-                className={clsx(
-                  "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
-                  {
-                    "bg-red-500": !order?.isPaid,
-                    "bg-green-700": order?.isPaid,
-                  }
-                )}
-              >
-                <IoCartOutline size={30} />
-                <span className="mx-2">
-                  {order?.isPaid ? "Payed" : "Payment pending"}
-                </span>
-              </div>
+              {order?.isPaid ? (
+                <OrderStatus isPaid={order.isPaid} />
+              ) : (
+                <PayPalButton amount={order!.total} orderId={order!.id} />
+              )}
             </div>
           </div>
         </div>
